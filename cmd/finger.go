@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"ehole/module/finger"
-	"ehole/module/finger/source"
+	"github.com/yearnming/ehole/module/finger"
+	"github.com/yearnming/ehole/module/finger/source"
 	"os"
 
 	"github.com/gookit/color"
@@ -38,24 +38,24 @@ var fingerCmd = &cobra.Command{
 			"			 /____/ https://forum.ywhack.com  By:shihuang\n")
 		if localfile != "" {
 			urls := removeRepeatedElement(source.LocalFile(localfile))
-			s := finger.NewScan(urls, thread, output,proxy)
+			s := finger.NewScan(urls, thread, output, proxy)
 			s.StartScan()
 			os.Exit(1)
 		}
 		if fofaip != "" {
 			urls := removeRepeatedElement(source.Fofaip(fofaip))
-			s := finger.NewScan(urls, thread, output,proxy)
+			s := finger.NewScan(urls, thread, output, proxy)
 			s.StartScan()
 			os.Exit(1)
 		}
 		if fofasearche != "" {
 			urls := removeRepeatedElement(source.Fafaall(fofasearche))
-			s := finger.NewScan(urls, thread, output,proxy)
+			s := finger.NewScan(urls, thread, output, proxy)
 			s.StartScan()
 			os.Exit(1)
 		}
 		if urla != "" {
-			s := finger.NewScan([]string{urla}, thread, output,proxy)
+			s := finger.NewScan([]string{urla}, thread, output, proxy)
 			s.StartScan()
 			os.Exit(1)
 		}
@@ -69,7 +69,7 @@ var (
 	urla        string
 	thread      int
 	output      string
-	proxy		string
+	proxy       string
 )
 
 func init() {

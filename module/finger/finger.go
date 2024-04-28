@@ -1,11 +1,13 @@
 package finger
 
 import (
-	"ehole/module/finger/source"
-	"ehole/module/queue"
+	//"ehole/module/finger/source"
+	//"ehole/module/queue"
 	"encoding/json"
 	"fmt"
 	"github.com/gookit/color"
+	"github.com/yearnming/ehole/module/finger/source"
+	"github.com/yearnming/ehole/module/queue"
 	"os"
 	"strings"
 	"sync"
@@ -50,12 +52,12 @@ func NewScan(urls []string, thread int, output string, proxy string) *FinScan {
 	}
 	s.Finpx = GetWebfingerprint()
 	for _, url := range urls {
-		s.UrlQueue.Push([]string{url,"0"})
+		s.UrlQueue.Push([]string{url, "0"})
 	}
 	return s
 }
 
-func (s *FinScan)StartScan() {
+func (s *FinScan) StartScan() {
 	for i := 0; i <= s.Thread; i++ {
 		s.Wg.Add(1)
 		go func() {
@@ -65,7 +67,7 @@ func (s *FinScan)StartScan() {
 	}
 	s.Wg.Wait()
 	color.RGBStyleFromString("244,211,49").Println("\n重点资产：")
-	for _,aas := range s.FocusResult {
+	for _, aas := range s.FocusResult {
 		fmt.Printf(fmt.Sprintf("[ %s | ", aas.Url))
 		color.RGBStyleFromString("237,64,35").Printf(fmt.Sprintf("%s", aas.Cms))
 		fmt.Printf(fmt.Sprintf(" | %s | %d | %d | %s ]\n", aas.Server, aas.Statuscode, aas.Length, aas.Title))
@@ -92,10 +94,10 @@ func RemoveDuplicatesAndEmpty(a []string) (ret []string) {
 	return
 }
 
-func (s *FinScan)fingerScan() {
+func (s *FinScan) fingerScan() {
 	for s.UrlQueue.Len() != 0 {
 		dataface := s.UrlQueue.Pop()
-		switch dataface.(type){
+		switch dataface.(type) {
 		case []string:
 			url := dataface.([]string)
 			var data *resps
@@ -160,11 +162,11 @@ func (s *FinScan)fingerScan() {
 			cms = RemoveDuplicatesAndEmpty(cms)
 			cmss := strings.Join(cms, ",")
 			out := Outrestul{data.url, cmss, data.server, data.statuscode, data.length, data.title}
-			s.AllResult = append(s.AllResult,out)
+			s.AllResult = append(s.AllResult, out)
 			if len(out.Cms) != 0 {
 				outstr := fmt.Sprintf("[ %s | %s | %s | %d | %d | %s ]", out.Url, out.Cms, out.Server, out.Statuscode, out.Length, out.Title)
 				color.RGBStyleFromString("237,64,35").Println(outstr)
-				s.FocusResult = append(s.FocusResult,out)
+				s.FocusResult = append(s.FocusResult, out)
 			} else {
 				outstr := fmt.Sprintf("[ %s | %s | %s | %d | %d | %s ]", out.Url, out.Cms, out.Server, out.Statuscode, out.Length, out.Title)
 				fmt.Println(outstr)
@@ -174,4 +176,3 @@ func (s *FinScan)fingerScan() {
 		}
 	}
 }
-
