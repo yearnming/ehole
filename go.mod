@@ -1,4 +1,4 @@
-module ehole
+module github.com/yearnming/ehole
 
 go 1.15
 
